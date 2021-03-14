@@ -1,27 +1,28 @@
-import { CanvasNode } from '../interfaces/CanvasNode';
-import { ASTNode } from './nodes/Node';
+import { CanvasNode } from "../interfaces/CanvasNode";
+import { ASTNode } from "./nodes/Node";
 
-import LinearIterator from './nodes/iterators/LinearIterator';
+import LinearIterator from "./nodes/iterators/LinearIterator";
 
-import PixelToRGB from './nodes/data/PixelToRGB';
-import RGBToPixel from './nodes/data/RGBToPixel';
+import PixelToRGB from "./nodes/data/PixelToRGB";
+import RGBToPixel from "./nodes/data/RGBToPixel";
+import Constant from "./nodes/data/Constant";
 
-import AddNumber from './nodes/logic/AddNumber';
-import AddPixel from './nodes/logic/AddPixel';
+import AddNumber from "./nodes/logic/AddNumber";
+import AddPixel from "./nodes/logic/AddPixel";
 
-import SubstractNumber from './nodes/logic/SubstractNumber';
-import SubstractPixel from './nodes/logic/SubstractPixel';
+import SubstractNumber from "./nodes/logic/SubstractNumber";
+import SubstractPixel from "./nodes/logic/SubstractPixel";
 
-import MultiplyNumber from './nodes/logic/MultiplyNumber';
-import MultiplyPixel from './nodes/logic/MultiplyPixel';
+import MultiplyNumber from "./nodes/logic/MultiplyNumber";
+import MultiplyPixel from "./nodes/logic/MultiplyPixel";
 
-import DivideNumber from './nodes/logic/DivideNumber';
-import DividePixel from './nodes/logic/DividePixel';
+import DivideNumber from "./nodes/logic/DivideNumber";
+import DividePixel from "./nodes/logic/DividePixel";
 
-import RevertNumber from './nodes/logic/RevertNumber';
-import RevertPixel from './nodes/logic/RevertPixel';
+import RevertNumber from "./nodes/logic/RevertNumber";
+import RevertPixel from "./nodes/logic/RevertPixel";
 
-import PixelOutput from './nodes/output/PixelOutput';
+import PixelOutput from "./nodes/output/PixelOutput";
 
 export default class NodeFactory {
   private static instance: NodeFactory;
@@ -38,40 +39,42 @@ export default class NodeFactory {
 
   public build(node: CanvasNode): ASTNode | undefined {
     switch (node.canvasData.type) {
-      case 'LinearIterator':
+      case "LinearIterator":
         return new LinearIterator(node);
 
-      case 'PixelToRGB':
+      case "Constant":
+        return new Constant(node);
+      case "PixelToRGB":
         return new PixelToRGB(node);
-      case 'RGBToPixel':
+      case "RGBToPixel":
         return new RGBToPixel(node);
 
-      case 'AddNumber':
+      case "AddNumber":
         return new AddNumber(node);
-      case 'AddPixel':
+      case "AddPixel":
         return new AddPixel(node);
 
-      case 'SubstractNumber':
+      case "SubstractNumber":
         return new SubstractNumber(node);
-      case 'SubstractPixel':
+      case "SubstractPixel":
         return new SubstractPixel(node);
 
-      case 'MultiplyNumber':
+      case "MultiplyNumber":
         return new MultiplyNumber(node);
-      case 'MultiplyPixel':
+      case "MultiplyPixel":
         return new MultiplyPixel(node);
 
-      case 'DivideNumber':
+      case "DivideNumber":
         return new DivideNumber(node);
-      case 'DividePixel':
+      case "DividePixel":
         return new DividePixel(node);
 
-      case 'RevertNumber':
+      case "RevertNumber":
         return new RevertNumber(node);
-      case 'RevertPixel':
+      case "RevertPixel":
         return new RevertPixel(node);
 
-      case 'PixelOutput':
+      case "PixelOutput":
         return new PixelOutput(node);
     }
   }

@@ -4,6 +4,7 @@ import { CanvasIO, CanvasIOData } from './CanvasIO';
 
 export type CanvasNodeType =
   | 'LinearIterator'
+  | 'Constant'
   | 'PixelToRGB'
   | 'RGBToPixel'
   | 'AddNumber'
@@ -49,6 +50,18 @@ export type CanvasNode = Node & {
 
 export function isCanvasNode(node: Node): node is CanvasNode {
   return 'canvasData' in node;
+}
+
+export type CanvasRootType = 'linear';
+
+export type CanvasRootNode = CanvasNode & {
+  canvasData: {
+    isRoot: true;
+  };
+};
+
+export function isCanvasRootNode(node: Node): node is CanvasRootNode {
+  return isCanvasNode(node) && 'isRoot' in node.canvasData;
 }
 
 export type CanvasIteratorType = 'linear';

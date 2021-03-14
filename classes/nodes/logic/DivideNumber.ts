@@ -14,6 +14,6 @@ export default class DivideNumber extends ASTNode {
     const lhs = this.node.canvasData.schema.inputs[0].value as Number;
     const rhs = this.node.canvasData.schema.inputs[1].value as Number;
 
-    this.node.canvasData.schema.outputs[0].value = new Number((lhs.value / (rhs.value || 1)) % 255);
+    this.node.canvasData.schema.outputs[0].value = new Number(Math.min((lhs.value / (rhs.value || 1)), 255));
   }
 }

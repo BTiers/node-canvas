@@ -15,9 +15,9 @@ export default class MultiplyPixel extends ASTNode {
     const rhs = this.node.canvasData.schema.inputs[1].value as Pixel;
 
     this.node.canvasData.schema.outputs[0].value = new Pixel(
-      (lhs.r * rhs.r) % 255,
-      (lhs.g * rhs.g) % 255,
-      (lhs.b * rhs.b) % 255,
+      Math.min((lhs.r * rhs.r), 255),
+      Math.min((lhs.g * rhs.g), 255),
+      Math.min((lhs.b * rhs.b), 255),
     );
   }
 }

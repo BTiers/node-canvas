@@ -1,67 +1,68 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 import ReactFlow, {
   addEdge,
   Connection,
   Edge,
   Elements,
   ReactFlowProvider,
-} from 'react-flow-renderer';
+} from "react-flow-renderer";
 
-import Layout from '../components/Layout';
-import Canvas from '../components/Canvas';
+import Layout from "../components/Layout";
+import Canvas from "../components/Canvas";
 
-import CanvasParser from '../components/context/CanvasParser';
-import CanvasDisplay from '../components/context/CanvasDisplay';
+import CanvasParser from "../components/context/CanvasParser";
+import CanvasDisplay from "../components/context/CanvasDisplay";
 
-import LinearIteratorNode from '../components/nodes/iterators/LinearIterator';
+import LinearIteratorNode from "../components/nodes/iterators/LinearIterator";
 
-import PixelToRGBNode from '../components/nodes/data/PixelToRGB';
-import RGBToPixelNode from '../components/nodes/data/RGBToPixel';
+import PixelToRGBNode from "../components/nodes/data/PixelToRGB";
+import RGBToPixelNode from "../components/nodes/data/RGBToPixel";
+import ConstantNode from "../components/nodes/data/Constant";
 
-import AddNumberNode from '../components/nodes/logic/AddNumber';
-import AddPixelNode from '../components/nodes/logic/AddPixel';
-import SubstractNumberNode from '../components/nodes/logic/SubstractNumber';
-import SubstractPixelNode from '../components/nodes/logic/SubstractPixel';
-import MultiplyNumberNode from '../components/nodes/logic/MultiplyNumber';
-import MultiplyPixelNode from '../components/nodes/logic/MultiplyPixel';
-import DivideNumberNode from '../components/nodes/logic/DivideNumber';
-import DividePixelNode from '../components/nodes/logic/DividePixel';
-import RevertNumberNode from '../components/nodes/logic/RevertNumber';
-import RevertPixelNode from '../components/nodes/logic/RevertPixel';
+import AddNumberNode from "../components/nodes/logic/AddNumber";
+import AddPixelNode from "../components/nodes/logic/AddPixel";
+import SubstractNumberNode from "../components/nodes/logic/SubstractNumber";
+import SubstractPixelNode from "../components/nodes/logic/SubstractPixel";
+import MultiplyNumberNode from "../components/nodes/logic/MultiplyNumber";
+import MultiplyPixelNode from "../components/nodes/logic/MultiplyPixel";
+import DivideNumberNode from "../components/nodes/logic/DivideNumber";
+import DividePixelNode from "../components/nodes/logic/DividePixel";
+import RevertNumberNode from "../components/nodes/logic/RevertNumber";
+import RevertPixelNode from "../components/nodes/logic/RevertPixel";
 
-import PixelNode from '../components/nodes/output/Pixel';
+import PixelNode from "../components/nodes/output/Pixel";
 
 const initialElements = [
   {
-    id: 'process_it',
-    type: 'linearIterator',
+    id: "process_it",
+    type: "linearIterator",
     position: { x: 150, y: 5 },
     canvasData: {
-      type: 'LinearIterator',
+      type: "LinearIterator",
       schema: {
         inputs: [],
         outputs: [
           {
-            id: 'process_it__out-1',
-            send: 'pixel',
+            id: "process_it__out-1",
+            send: "pixel",
           },
         ],
       },
-      iteratorType: 'linear',
+      iteratorType: "linear",
     },
   },
   {
-    id: 'process_out',
-    type: 'pixel',
+    id: "process_out",
+    type: "pixel",
     position: { x: 150, y: 400 },
     canvasData: {
-      type: 'PixelOutput',
-      outputType: 'pixel',
+      type: "PixelOutput",
+      outputType: "pixel",
       schema: {
         inputs: [
           {
-            id: 'process_out__in-1',
-            accept: ['pixel'],
+            id: "process_out__in-1",
+            accept: ["pixel"],
           },
         ],
         outputs: [],
@@ -86,73 +87,100 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_data_${dataNodeID}`,
-          type: 'pixelToRgb',
+          type: "pixelToRgb",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'PixelToRGB',
+            type: "PixelToRGB",
             schema: {
               inputs: [
                 {
                   id: `process_data_${dataNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_data_${dataNodeID}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
                 {
                   id: `process_data_${dataNodeID}__out-2`,
-                  send: 'number',
+                  send: "number",
                 },
                 {
                   id: `process_data_${dataNodeID++}__out-3`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
+
+  const createConstantNode = useCallback(
+    () =>
+      setElements((elements) => [
+        ...elements,
+        {
+          id: `process_data_${dataNodeID}`,
+          type: "constant",
+          position: { x: 150, y: 200 },
+          canvasData: {
+            type: "Constant",
+            schema: {
+              inputs: [],
+              outputs: [
+                {
+                  id: `process_data_${dataNodeID++}__out-1`,
+                  send: "number",
+                },
+              ],
+            },
+            isRoot: true,
+          },
+        },
+      ]),
+    []
+  );
+
   const createRGBToPixelNode = useCallback(
     () =>
       setElements((elements) => [
         ...elements,
         {
           id: `process_data_${dataNodeID}`,
-          type: 'rgbToPixel',
+          type: "rgbToPixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'RGBToPixel',
+            type: "RGBToPixel",
             schema: {
               inputs: [
                 {
                   id: `process_data_${dataNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_data_${dataNodeID}__in-2`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_data_${dataNodeID}__in-3`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_data_${dataNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   const createAddNumberNode = useCallback(
@@ -161,32 +189,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'addNumber',
+          type: "addNumber",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'AddNumber',
+            type: "AddNumber",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
   const createAddPixelNode = useCallback(
     () =>
@@ -194,32 +222,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'addPixel',
+          type: "addPixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'AddPixel',
+            type: "AddPixel",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   const createSubstractNumberNode = useCallback(
@@ -228,32 +256,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'substractNumber',
+          type: "substractNumber",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'SubstractNumber',
+            type: "SubstractNumber",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
   const createSubstractPixelNode = useCallback(
     () =>
@@ -261,32 +289,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'substractPixel',
+          type: "substractPixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'SubstractPixel',
+            type: "SubstractPixel",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   const createMultiplyNumberNode = useCallback(
@@ -295,32 +323,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'multiplyNumber',
+          type: "multiplyNumber",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'MultiplyNumber',
+            type: "MultiplyNumber",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
   const createMultiplyPixelNode = useCallback(
     () =>
@@ -328,32 +356,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'multiplyPixel',
+          type: "multiplyPixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'MultiplyPixel',
+            type: "MultiplyPixel",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   const createDivideNumberNode = useCallback(
@@ -362,32 +390,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'divideNumber',
+          type: "divideNumber",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'DivideNumber',
+            type: "DivideNumber",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
   const createDividePixelNode = useCallback(
     () =>
@@ -395,32 +423,32 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'DividePixel',
+          type: "DividePixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'DividePixel',
+            type: "DividePixel",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
                 {
                   id: `process_logic_${logicNodeID}__in-2`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   const createRevertNumberNode = useCallback(
@@ -429,28 +457,28 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'revertNumber',
+          type: "revertNumber",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'RevertNumber',
+            type: "RevertNumber",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['number'],
+                  accept: ["number"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'number',
+                  send: "number",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
   const createRevertPixelNode = useCallback(
     () =>
@@ -458,96 +486,114 @@ const IndexPage = () => {
         ...elements,
         {
           id: `process_logic_${logicNodeID}`,
-          type: 'revertPixel',
+          type: "revertPixel",
           position: { x: 150, y: 200 },
           canvasData: {
-            type: 'RevertPixel',
+            type: "RevertPixel",
             schema: {
               inputs: [
                 {
                   id: `process_logic_${logicNodeID}__in-1`,
-                  accept: ['pixel'],
+                  accept: ["pixel"],
                 },
               ],
               outputs: [
                 {
                   id: `process_logic_${logicNodeID++}__out-1`,
-                  send: 'pixel',
+                  send: "pixel",
                 },
               ],
             },
           },
         },
       ]),
-    [],
+    []
   );
 
   return (
-    <Layout title='Home | Next.js + TypeScript Example'>
+    <Layout title="Home | Next.js + TypeScript Example">
       <ReactFlowProvider>
         <CanvasDisplay.Provider>
           <CanvasParser.Provider>
-            <div className='grid w-screen h-screen grid-cols-2 gap-2 px-2'>
-              <div className='col-span-1 bg-white'>
-                <div className='flex flex-wrap justify-between gap-2 m-2'>
+            <div className="grid w-screen h-screen grid-cols-2 gap-2 px-2">
+              <div className="col-span-1 bg-white">
+                <div className="flex flex-wrap justify-between gap-2 m-2">
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createPixelToRGBNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createPixelToRGBNode}
+                  >
                     Pixel to RGB
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createRGBToPixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createRGBToPixelNode}
+                  >
                     RGB to Pixel
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createAddNumberNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createConstantNode}
+                  >
+                    Constant
+                  </button>
+                  <button
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createAddNumberNode}
+                  >
                     Add number
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createAddPixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createAddPixelNode}
+                  >
                     Add pixel
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createSubstractNumberNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createSubstractNumberNode}
+                  >
                     Substract number
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createSubstractPixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createSubstractPixelNode}
+                  >
                     Substract pixel
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createMultiplyNumberNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createMultiplyNumberNode}
+                  >
                     Multiply number
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createMultiplyPixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createMultiplyPixelNode}
+                  >
                     Multiply pixel
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createDivideNumberNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createDivideNumberNode}
+                  >
                     Divide number
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createDividePixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createDividePixelNode}
+                  >
                     Divide pixel
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createRevertNumberNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createRevertNumberNode}
+                  >
                     Revert number
                   </button>
                   <button
-                    className='px-3 py-2 font-semibold text-white bg-blue-600 rounded-md'
-                    onClick={createRevertPixelNode}>
+                    className="px-3 py-2 font-semibold text-white bg-blue-600 rounded-md"
+                    onClick={createRevertPixelNode}
+                  >
                     Revert pixel
                   </button>
                 </div>
@@ -559,6 +605,7 @@ const IndexPage = () => {
                     pixel: PixelNode,
                     pixelToRgb: PixelToRGBNode,
                     rgbToPixel: RGBToPixelNode,
+                    constant: ConstantNode,
                     addNumber: AddNumberNode,
                     addPixel: AddPixelNode,
                     substractNumber: SubstractNumberNode,
@@ -572,7 +619,7 @@ const IndexPage = () => {
                   }}
                 />
               </div>
-              <div className='col-span-1 bg-white'>
+              <div className="col-span-1 bg-white">
                 <Canvas />
               </div>
             </div>

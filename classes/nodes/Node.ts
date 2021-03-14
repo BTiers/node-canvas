@@ -50,6 +50,27 @@ export abstract class ASTNode {
   abstract compute(): void;
 }
 
+export abstract class ASTRootNode extends ASTNode {
+  constructor(public node: CanvasNode) { super(node); }
+
+  traverse(flow: ASTFlow) {
+    flow.links.forEach((link) => {
+      const value = flow.node.getOutput(link.sourceEdgeId);
+
+      link.targets.forEach((target) => {
+        target.node.setInputValue(target.through, value);
+        if (target.node.canCompute()) {
+          target.node.compute();
+          this.traverse(target);
+        }
+        return;
+      });
+    });
+  }
+
+  abstract launch(flow: ASTFlow): void;
+}
+
 export abstract class ASTIteratorNode extends ASTNode {
   constructor(public node: CanvasNode) { super(node); }
 

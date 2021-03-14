@@ -1,27 +1,7 @@
-import { ASTNode } from '../classes/nodes/Node';
-import { CanvasIteratorType } from './CanvasNode';
+import { ASTNode } from "../classes/nodes/Node";
+import { CanvasIteratorType } from "./CanvasNode";
 
-// type ASTLink = ASTFlow & {
-//   node: ASTNode | undefined;
-//   targetEdgeId: string;
-// };
-
-// export type ASTFlow = {
-//   links: ASTLink[];
-//   sourceEdgeId: string;
-//   node: ASTNode;
-//   next: ASTLink[];
-// };
-
-export type ASTType = 'process';
-
-// export type ASTFlow = {
-//   node: CanvasNode;
-// };
-
-// export type ASTFlowStep = ASTFlow & {
-//   next?: ASTFlowStep;
-// };
+export type ASTType = "process";
 
 export type ASTLink = {
   sourceEdgeId: string;
@@ -40,4 +20,5 @@ export type CanvasAST = {
   root: ASTNode;
   out: ASTNode;
   flow?: ASTFlow;
+  subFlows?: ASTFlow[];
 };
