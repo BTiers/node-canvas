@@ -109,7 +109,7 @@ function transformToASTNodes(nodes: Node[]): ASTNode[] {
 function useCanvasParser() {
   const nodes = useStoreState((store) => store.nodes);
   const edges = useStoreState((store) => store.edges);
-  const { canvas, setCanvas } = CanvasDisplay.useContainer();
+  const { canvas, setCanvasImage } = CanvasDisplay.useContainer();
 
   const [AST, setAST] = useState<CanvasAST>();
 
@@ -117,7 +117,7 @@ function useCanvasParser() {
   const launch = useCallback(() => {
     if (!!AST) {
       AST.subFlows?.forEach((subFlow) => (subFlow.node as ASTRootNode)?.launch(subFlow));
-      (AST.flow?.node as ASTIteratorNode)?.launch(AST, canvas, setCanvas);
+      (AST.flow?.node as ASTIteratorNode)?.launch(AST, canvas, setCanvasImage);
     }
   }, [AST, canvas]);
 

@@ -89,5 +89,5 @@ export abstract class ASTIteratorNode extends ASTNode {
     });
   }
 
-  abstract launch(ast: CanvasAST, canvas: string[], setCanvas: (c: string[]) => any): void;
+  abstract launch(ast: CanvasAST, canvas: ImageData, setCanvas: (image: ImageData) => void): void;
 }

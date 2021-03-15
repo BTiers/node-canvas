@@ -1,9 +1,9 @@
-import { Pixel } from '../../../data/Pixel';
-import { CanvasAST } from '../../../interfaces/CanvasAST';
-import { CanvasNode } from '../../../interfaces/CanvasNode';
-import { hexToRgb, rgbToHex } from '../../../utils/colors';
+import { Pixel } from "../../../data/Pixel";
+import { CanvasAST } from "../../../interfaces/CanvasAST";
+import { CanvasNode } from "../../../interfaces/CanvasNode";
+import { hexToRgb, rgbToHex } from "../../../utils/colors";
 
-import { ASTIteratorNode } from '../Node';
+import { ASTIteratorNode } from "../Node";
 
 export default class LinearIterator extends ASTIteratorNode {
   constructor(node: CanvasNode) {
@@ -16,29 +16,26 @@ export default class LinearIterator extends ASTIteratorNode {
 
   compute() {}
 
-  launch(ast: CanvasAST, canvas: string[], setCanvas: (c: string[]) => any) {
-    canvas.forEach((color, index) => {
-      window.setTimeout(() => {
-        const canvasColor = hexToRgb(color);
+  launch(ast: CanvasAST, canvas: ImageData, setCanvas: (image: ImageData) => void) {
+    const { data } = canvas;
+    for (let idx = 0; idx < data.length; idx += 4) {
+      this.node.canvasData.schema.outputs[0].value = new Pixel(
+        data[idx],
+        data[idx + 1],
+        data[idx + 2]
+      );
 
-        if (!canvasColor) throw new Error('invalid_canvas');
+      if (ast.flow) {
+        this.traverse(ast.flow);
 
-        this.node.canvasData.schema.outputs[0].value = new Pixel(
-          canvasColor[0],
-          canvasColor[1],
-          canvasColor[2],
-        );
+        let { r, g, b } = ast.out.node.canvasData.schema.inputs[0].value as Pixel;
 
-        if (ast.flow) {
-          this.traverse(ast.flow);
+        data[idx] = r;
+        data[idx + 1] = g;
+        data[idx + 2] = b;
+      } else throw new Error("no_valid_flow");
+    }
 
-          let { r, g, b } = ast.out.node.canvasData.schema.inputs[0].value as Pixel;
-
-          canvas.splice(index, 1, rgbToHex(r, g, b));
-
-          setCanvas([...canvas]);
-        } else throw new Error('no_valid_flow');
-      }, index * 10);
-    });
+    setCanvas(canvas);
   }
 }

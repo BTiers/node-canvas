@@ -5,7 +5,7 @@ import CanvasDisplay from './context/CanvasDisplay';
 
 const Canvas = () => {
   let { generate, launch } = CanvasParser.useContainer();
-  let { canvas } = CanvasDisplay.useContainer();
+  let { canvas, canvasRef, onImageChange } = CanvasDisplay.useContainer();
 
   return useMemo(
     () => (
@@ -23,12 +23,14 @@ const Canvas = () => {
           </button>
         </div>
         <div className='flex flex-wrap h-96 w-96'>
-          {canvas.map((color, index) => (
+          <input type='file' onChange={onImageChange} />
+          <canvas ref={canvasRef} />
+          {/* {canvas.map((color, index) => (
             <div
               className='inline-flex w-4 h-4'
               style={{ backgroundColor: color }}
               key={`pixel_${index}`} />
-          ))}
+          ))} */}
         </div>
       </div>
     ),

@@ -1,8 +1,6 @@
 import { ASTFlow, CanvasAST } from "../../../interfaces/CanvasAST";
 import { CanvasNode } from "../../../interfaces/CanvasNode";
 
-import { Number } from "../../../data/Number";
-
 import { ASTRootNode } from "../Node";
 
 export default class Constant extends ASTRootNode {
