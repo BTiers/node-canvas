@@ -2,8 +2,6 @@ import { useCallback, useRef, useState } from "react";
 
 import { createContainer } from "unstated-next";
 
-import { getRandomColor } from "../../utils/colors";
-
 // import home from "./canvas/home";
 
 function useCanvasDisplay() {

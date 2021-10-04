@@ -1,4 +1,4 @@
-import { ASTFlow, CanvasAST } from "../../../interfaces/CanvasAST";
+import { ASTFlow } from "../../../interfaces/CanvasAST";
 import { CanvasNode } from "../../../interfaces/CanvasNode";
 
 import { ASTRootNode } from "../Node";

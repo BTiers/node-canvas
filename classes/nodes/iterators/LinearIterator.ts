@@ -1,7 +1,6 @@
 import { Pixel } from "../../../data/Pixel";
 import { CanvasAST } from "../../../interfaces/CanvasAST";
 import { CanvasNode } from "../../../interfaces/CanvasNode";
-import { hexToRgb, rgbToHex } from "../../../utils/colors";
 
 import { ASTIteratorNode } from "../Node";
 

@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { Edge, Node, useStoreState } from "react-flow-renderer";
 import { createContainer } from "unstated-next";
 
-import { getLinkedASTNodesFromSource, getLinkedASTNodesFromTarget } from "../../utils/nodes";
+import { getLinkedASTNodesFromSource } from "../../utils/nodes";
 
 import { ASTIteratorNode, ASTNode, ASTRootNode } from "../../classes/nodes/Node";
 import NodeFactory from "../../classes/NodeFactory";
@@ -115,7 +115,7 @@ function useCanvasParser() {
 
   const generate = useCallback(() => setAST(ASTParser(nodes, edges)), [nodes]);
   const launch = useCallback(() => {
-    if (!!AST) {
+    if (!!AST && !!canvas) {
       AST.subFlows?.forEach((subFlow) => (subFlow.node as ASTRootNode)?.launch(subFlow));
       (AST.flow?.node as ASTIteratorNode)?.launch(AST, canvas, setCanvasImage);
     }
